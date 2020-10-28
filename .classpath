@@ -14,7 +14,7 @@
 	<classpathentry kind="lib" path="E:/dev/OpenGL/lwjgl-3.2.3/lwjgl-glfw/lwjgl-glfw-javadoc.jar"/>
 	<classpathentry kind="lib" path="E:/dev/OpenGL/lwjgl-3.2.3/lwjgl-glfw/lwjgl-glfw-natives-windows.jar"/>
 	<classpathentry kind="lib" path="E:/dev/OpenGL/lwjgl-3.2.3/lwjgl-glfw/lwjgl-glfw-sources.jar"/>
-	<classpathentry kind="lib" path="E:/dev/OpenGL/lwjgl-3.2.3/lwjgl-opengl/lwjgl-opengl.jar"/>
+	<classpathentry kind="lib" path="E:/dev/OpenGL/lwjgl-3.2.3/lwjgl-opengl/lwjgl-opengl.jar" sourcepath="E:/dev/OpenGL/lwjgl-3.2.3/lwjgl-opengl/lwjgl-opengl-sources.jar"/>
 	<classpathentry kind="lib" path="E:/dev/OpenGL/lwjgl-3.2.3/lwjgl-opengl/lwjgl-opengl-javadoc.jar"/>
 	<classpathentry kind="lib" path="E:/dev/OpenGL/lwjgl-3.2.3/lwjgl-opengl/lwjgl-opengl-natives-windows.jar"/>
 	<classpathentry kind="lib" path="E:/dev/OpenGL/lwjgl-3.2.3/lwjgl-opengl/lwjgl-opengl-sources.jar"/>
