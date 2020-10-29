@@ -5,6 +5,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 import com.fuzzyrock.flappy.graphics.Shader;
 import com.fuzzyrock.flappy.input.Input;
+import com.fuzzyrock.flappy.level.Level;
 import com.fuzzyrock.flappy.math.Matrix4f;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -21,6 +22,8 @@ public class Main implements Runnable {
 	private boolean running = false;
 
 	private long window;
+
+	private Level level;
 
 	public void start() {
 		running = true;
@@ -56,8 +59,10 @@ public class Main implements Runnable {
 
 		Shader.loadAll();
 
-		Matrix4f pr_matrix = Matrix4f.orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f);
+		Matrix4f pr_matrix = Matrix4f.orthographic(-10.0f, 10.0f, -10.0f * 9.0f / 16.0f, 10.0f * 9.0f / 16.0f, -1.0f, 1.0f);
 		Shader.BG.setUniformMat4f("pr_matrix", pr_matrix);
+
+		level = new Level();
 	}
 
 	public void run() {
@@ -81,6 +86,13 @@ public class Main implements Runnable {
 
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		level.render();
+
+		int errorCode = glGetError();
+		if (errorCode != GL_NO_ERROR) {
+			System.err.println("OpenGL error: " + errorCode);
+		}
+
 		glfwSwapBuffers(window);		
 	}
 

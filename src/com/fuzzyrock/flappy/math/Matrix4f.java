@@ -26,7 +26,7 @@ public class Matrix4f {
 		return result;
 	}
 
-	public static Matrix4f orthographic(float left, float right, float top, float bottom, float near, float far) {
+	public static Matrix4f orthographic(float left, float right, float bottom, float top, float near, float far) {
 		Matrix4f result = identity();
 
 		// [ROW COLUMN]
