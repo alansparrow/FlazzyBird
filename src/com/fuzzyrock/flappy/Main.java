@@ -3,7 +3,9 @@ package com.fuzzyrock.flappy;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
+import com.fuzzyrock.flappy.graphics.Shader;
 import com.fuzzyrock.flappy.input.Input;
+import com.fuzzyrock.flappy.math.Matrix4f;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -52,7 +54,10 @@ public class Main implements Runnable {
 		glEnable(GL_DEPTH_TEST);
 		System.out.println("OpenGL: " + glGetString(GL_VERSION));
 
-		
+		Shader.loadAll();
+
+		Matrix4f pr_matrix = Matrix4f.orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f);
+		Shader.BG.setUniformMat4f("pr_matrix", pr_matrix);
 	}
 
 	public void run() {
