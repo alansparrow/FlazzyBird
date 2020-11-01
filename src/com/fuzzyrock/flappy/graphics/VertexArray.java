@@ -22,13 +22,13 @@ public class VertexArray {
         vbo = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(vertices), GL_STATIC_DRAW);
-        glVertexAttribPointer(Shader.VERTEX_ATTRIB, 3, GL_FLOAT, false, 0, 0);
+        glVertexAttribPointer(Shader.VERTEX_ATTRIB, 3, GL_FLOAT, false, 3 * Float.SIZE / 8, 0);
         glEnableVertexAttribArray(Shader.VERTEX_ATTRIB);
 
         tbo = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, tbo);
         glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(textureCoordinates), GL_STATIC_DRAW);
-        glVertexAttribPointer(Shader.TCOORD_ATTRIB, 2, GL_FLOAT, false, 0, 0);
+        glVertexAttribPointer(Shader.TCOORD_ATTRIB, 2, GL_FLOAT, false, 2 * Float.SIZE / 8, 0);
         glEnableVertexAttribArray(Shader.TCOORD_ATTRIB);
 
         ibo = glGenBuffers();

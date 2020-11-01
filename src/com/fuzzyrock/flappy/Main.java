@@ -69,14 +69,42 @@ public class Main implements Runnable {
 
 	public void run() {
 		init();
+
+		long lastTime = System.nanoTime();
+		double delta = 0.0;
+		double ns = 1000000000.0 / 60.0; // how many nano seconds per frame (60 frames / s)
+		long timer = System.currentTimeMillis();
+		int updates = 0;
+		int frames = 0;
+
 		while (running) {
-			update();
+			long now = System.nanoTime();
+			delta += (now - lastTime) / ns;
+			// System.out.format("delta %-10.5f	accDelta %-10.5f%n", (now - lastTime) / ns, delta);
+			lastTime = now;
+			if (delta >= 1.0) {
+				update();
+				updates++;
+				// delta--;
+				delta -= 1.01;
+			}
 			render();
+			frames++;
+
+			if (System.currentTimeMillis() - timer > 1000) {
+				timer += 1000;
+				System.out.println(updates + " ups, " + frames + " fps");
+				updates = 0;
+				frames = 0;
+			}
 
 			if (glfwWindowShouldClose(window) == true) {
 				running = false;
 			}
 		}
+
+		glfwDestroyWindow(window);
+		glfwTerminate();
 	}
 
 	private void update() {
@@ -84,6 +112,8 @@ public class Main implements Runnable {
 		if (Input.keys[GLFW_KEY_SPACE]) {
 			System.out.println("FLAP!");
 		}
+
+		level.update();
 	}
 
 	private void render() {
