@@ -61,8 +61,14 @@ public class Main implements Runnable {
 		Shader.loadAll();
 
 		Matrix4f pr_matrix = Matrix4f.orthographic(-10.0f, 10.0f, -10.0f * 9.0f / 16.0f, 10.0f * 9.0f / 16.0f, -1.0f, 1.0f);
+		
+		// for BG
 		Shader.BG.setUniformMat4f("pr_matrix", pr_matrix);
 		Shader.BG.setUniform1i("tex", 1);
+
+		// for BIRD
+		Shader.BIRD.setUniformMat4f("pr_matrix", pr_matrix);
+		Shader.BIRD.setUniform1i("tex", 1);
 
 		level = new Level();
 	}

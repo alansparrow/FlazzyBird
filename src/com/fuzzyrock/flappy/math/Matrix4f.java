@@ -69,33 +69,17 @@ public class Matrix4f {
 
 	public Matrix4f multiply(Matrix4f matrix) {
 		Matrix4f result = new Matrix4f();
-
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 4; x++) {
 				float sum = 0.0f;
 				for (int e = 0; e < 4; e++) {
-					sum += this.elements[y + e * 4] * matrix.elements[e + x * 4];
-				}
-				this.elements[y + x * 4] = sum;
+					sum += this.elements[x + e * 4] * matrix.elements[e + y * 4]; 
+				}			
+				result.elements[x + y * 4] = sum;
 			}
 		}
-
 		return result;
 	}
-
-	// public Matrix4f multiply(Matrix4f matrix) {
-	// 	Matrix4f result = new Matrix4f();
-	// 	for (int y = 0; y < 4; y++) {
-	// 		for (int x = 0; x < 4; x++) {
-	// 			float sum = 0.0f;
-	// 			for (int e = 0; e < 4; e++) {
-	// 				sum += this.elements[x + e * 4] * matrix.elements[e + y * 4]; 
-	// 			}			
-	// 			result.elements[x + y * 4] = sum;
-	// 		}
-	// 	}
-	// 	return result;
-	// }
 
 	public FloatBuffer toFloatBuffer() {
 		return BufferUtils.createFloatBuffer(elements);
