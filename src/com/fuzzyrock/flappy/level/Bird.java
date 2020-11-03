@@ -44,6 +44,9 @@ public class Bird {
 
     public void update() {
         position.y -= yDelta;
+        if (position.y >= Constants.SCREEN_TOP - SIZE / 2) {
+            position.y = Constants.SCREEN_TOP - SIZE / 2;
+        }
 
         if (Input.isKeyDown(GLFW_KEY_SPACE)) {
             yDelta = -0.15f;

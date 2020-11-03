@@ -5,6 +5,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 import com.fuzzyrock.flappy.graphics.Shader;
 import com.fuzzyrock.flappy.input.Input;
+import com.fuzzyrock.flappy.level.Constants;
 import com.fuzzyrock.flappy.level.Level;
 import com.fuzzyrock.flappy.math.Matrix4f;
 
@@ -60,7 +61,12 @@ public class Main implements Runnable {
 		System.out.println("OpenGL: " + glGetString(GL_VERSION));
 		Shader.loadAll();
 
-		Matrix4f pr_matrix = Matrix4f.orthographic(-10.0f, 10.0f, -10.0f * 9.0f / 16.0f, 10.0f * 9.0f / 16.0f, -1.0f, 1.0f);
+		Matrix4f pr_matrix = Matrix4f.orthographic(Constants.SCREEN_LEFT
+												, Constants.SCREEN_RIGHT
+												, Constants.SCREEN_BOTTOM
+												, Constants.SCREEN_TOP
+												, Constants.SCREEN_NEAR
+												, Constants.SCREEN_FAR);
 		
 		// for BG
 		Shader.BG.setUniformMat4f("pr_matrix", pr_matrix);
@@ -69,6 +75,10 @@ public class Main implements Runnable {
 		// for BIRD
 		Shader.BIRD.setUniformMat4f("pr_matrix", pr_matrix);
 		Shader.BIRD.setUniform1i("tex", 1);
+
+		// for PIPE
+		Shader.PIPE.setUniformMat4f("pr_matrix", pr_matrix);
+		Shader.PIPE.setUniform1i("tex", 1);
 
 		level = new Level();
 	}
