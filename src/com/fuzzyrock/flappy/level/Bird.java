@@ -19,6 +19,8 @@ public class Bird {
     private float rot;
     private float yDelta;
 
+    private boolean control = true;
+
     public Bird() {
         float[] vertices = new float[] {
             -SIZE/2.0f, -SIZE/2.0f, 0.2f,
@@ -49,8 +51,11 @@ public class Bird {
             position.y = Constants.SCREEN_TOP - SIZE / 2;
         }
 
+        
         if (Input.isKeyDown(GLFW_KEY_SPACE)) {
-            yDelta = -0.15f;
+            if (control) {
+                yDelta = -0.15f;
+            } 
         } else {
             yDelta += 0.01f;
         }
@@ -77,5 +82,17 @@ public class Bird {
 
 	public float getSize() {
 		return SIZE;
-	}
+    }
+    
+    public void fall() {
+        yDelta = -0.15f;
+    }
+
+    public void setControl(boolean enabled) {
+        control = enabled;
+    }
+
+    public boolean getControl() {
+        return control;
+    }
 }

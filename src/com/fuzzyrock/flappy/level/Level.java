@@ -106,16 +106,19 @@ public class Level {
     }
 
     public void update() {
-        xScroll -= SCROLL_RATE;
-        if (xScroll <= -10.f) {
-            xScroll = 0.0f;
+        if (bird.getControl()) {
+            xScroll -= SCROLL_RATE;
+            if (xScroll <= -10.f) {
+                xScroll = 0.0f;
+            }
+            updatePipes();
         }
 
-        updatePipes();
         bird.update();
 
-        if (collision()) {
-            System.out.println("Collision");
+        if (bird.getControl() && collision()) {
+            bird.fall();
+            bird.setControl(false);
         }
     }
 
