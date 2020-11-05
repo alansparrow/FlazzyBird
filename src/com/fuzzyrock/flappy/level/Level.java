@@ -13,11 +13,11 @@ public class Level {
     private final float SCROLL_RATE = 0.03f;
 
     private VertexArray background;
+    private VertexArray fade;
 
     private Texture bgTexture;
 
     private float xScroll = 0.0f;
-    private float xScrollPipe = 0.0f;
 
     private Bird bird;
 
@@ -29,7 +29,11 @@ public class Level {
 
     private  Random random = new Random();
 
+    private float time = 0.0f;
+
     private final float SCREEN_OFFSET = Constants.SCREEN_RIGHT / 2.0f;
+
+    private final float PIPE_GAP = 11.5f;
 
     public Level() {
         float[] vertices = new float[] {
@@ -53,6 +57,7 @@ public class Level {
 
         background = new VertexArray(vertices, indices, tcs);
         bgTexture = new Texture("res/bg.jpeg");
+        fade = new VertexArray(6);
 
         bird = new Bird();
         createPipes();
@@ -62,7 +67,7 @@ public class Level {
         Pipe.create();
         for (int i = 0; i < PIPE_COUNT * 2; i += 2) {
             pipes[i] = new Pipe(SCREEN_OFFSET + index * 3.0f, random.nextFloat() * 4.0f);
-            pipes[i + 1] = new Pipe(pipes[i].getX(), pipes[i].getY() - 11.0f);
+            pipes[i + 1] = new Pipe(pipes[i].getX(), pipes[i].getY() - PIPE_GAP);
             index += 2;
         }
     }
@@ -75,9 +80,9 @@ public class Level {
 
         for (int i = 0; i < PIPE_COUNT * 2; i++) {
             float px0 = pipes[i].getX();
-            float px1 = pipes[i].getX() + pipes[i].getWidth();
+            float px1 = pipes[i].getX() + Pipe.getWidth();
             float py0 = pipes[i].getY();
-            float py1 = pipes[i].getY() + pipes[i].getHeight();
+            float py1 = pipes[i].getY() + Pipe.getHeight();
 
             if (bx1 > px0 && bx0 < px1) {
                 if (by1 > py0 && by0 < py1) {
@@ -97,7 +102,7 @@ public class Level {
                 float lastPipeXPos = pipes[lastPipeIdx].getModelMatrix().elements[0 + 3 * 4];
 
                 pipes[i] = new Pipe(lastPipeXPos + 2 * 3.0f, random.nextFloat() * 4.0f);
-                pipes[i + 1] = new Pipe(pipes[i].getX(), pipes[i].getY() - 11.0f);
+                pipes[i + 1] = new Pipe(pipes[i].getX(), pipes[i].getY() - PIPE_GAP);
             } else {
                 pipes[i].setModelMatrix(pipes[i].getModelMatrix().multiply(Matrix4f.translate(new Vector3f(-SCROLL_RATE, 0.0f, 0.0f))));
                 pipes[i + 1].setModelMatrix(pipes[i + 1].getModelMatrix().multiply(Matrix4f.translate(new Vector3f(-SCROLL_RATE, 0.0f, 0.0f))));
@@ -116,14 +121,21 @@ public class Level {
 
         bird.update();
 
-        if (bird.getControl() && collision()) {
-            bird.fall();
-            bird.setControl(false);
+        if (bird.getControl()) {
+            float by1 = bird.getY() + bird.getSize() / 2;
+            if (collision() || (by1 < Constants.SCREEN_BOTTOM * 1.2))
+            {
+                bird.fall();
+                bird.setControl(false);
+            }
         }
+
+        time += 0.01f;
     }
 
     private void renderPipes() {
         Shader.PIPE.enable();
+        Shader.PIPE.setUniform2f("bird", 0.0f, bird.getY());
         Pipe.getTexture().bind();
         Pipe.getMesh().bind();
 
@@ -142,6 +154,8 @@ public class Level {
         bgTexture.bind();
         background.bind();
         Shader.BG.enable();
+        Shader.BG.setUniform2f("bird", 0.01f, bird.getY());
+
         // System.out.println("====");
         for (int i = 0; i < 3; i++) {
             Shader.BG.setUniformMat4f("vw_matrix", Matrix4f.translate(new Vector3f(i * 10 + xScroll, 0.0f, 0.0f)));
@@ -153,5 +167,14 @@ public class Level {
 
         renderPipes();  
         bird.render();
+
+        Shader.FADE.enable();
+        Shader.FADE.setUniform1f("time", time);
+        fade.render();
+        Shader.FADE.disable();
+    }
+
+    public boolean isGameOver() {
+        return !bird.getControl();
     }
 }

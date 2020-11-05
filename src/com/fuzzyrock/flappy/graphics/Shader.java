@@ -17,6 +17,7 @@ public class Shader {
     public static Shader BG;
     public static Shader BIRD;
     public static Shader PIPE;
+    public static Shader FADE;
 
     private final int ID;
     private Map<String, Integer> locationCache = new HashMap<String, Integer>();
@@ -32,6 +33,7 @@ public class Shader {
         BG = new Shader("shaders/bg.vert", "shaders/bg.frag");
         BIRD = new Shader("shaders/bird.vert", "shaders/bird.frag");
         PIPE = new Shader("shaders/pipe.vert", "shaders/pipe.frag");
+        FADE = new Shader("shaders/fade.vert", "shaders/fade.frag");
     }
 
     public int getUniform(String name) {
@@ -60,7 +62,7 @@ public class Shader {
         glUniform1f(getUniform(name), value);
     }
 
-    public void setUniform2f(String name, int value1, int value2) {
+    public void setUniform2f(String name, Float value1, float value2) {
         if (!isEnabled) enable();
         glUniform2f(getUniform(name), value1, value2);
     }

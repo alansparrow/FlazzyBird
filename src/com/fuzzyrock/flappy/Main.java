@@ -35,14 +35,16 @@ public class Main implements Runnable {
 
 	private void init() {
 		if (glfwInit() != true) {
-			// TODO: handle it
+			System.err.println("glfwInit() failed!");
+			new Exception().printStackTrace();
 			return;
 		} 
 
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-		window = glfwCreateWindow(width, height, "Flappy", NULL, NULL);
+		window = glfwCreateWindow(width, height, "Flazzy Bird", NULL, NULL);
 		if (window == NULL) {
-			// TODO: handle it
+			System.err.println("glfwCreateWindow() failed!");
+			new Exception().printStackTrace();
 			return;
 		}
 
@@ -55,9 +57,15 @@ public class Main implements Runnable {
 		
 		GL.createCapabilities();
 
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		// glClearColor(1.0f, 1.0f, 1.0f, 1.0f);  // make clear color WHITE
+
 		glEnable(GL_DEPTH_TEST);
 		glActiveTexture(GL_TEXTURE1);
+
+		// blending
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		System.out.println("OpenGL: " + glGetString(GL_VERSION));
 		Shader.loadAll();
 
@@ -125,11 +133,12 @@ public class Main implements Runnable {
 
 	private void update() {
 		glfwPollEvents();
-		if (Input.keys[GLFW_KEY_SPACE]) {
-			// System.out.println("FLAP!");
-		}
 
 		level.update();
+
+		if (level.isGameOver() && Input.isKeyDown(GLFW_KEY_SPACE)) {
+			level = new Level();
+		}
 	}
 
 	private void render() {

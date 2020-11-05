@@ -54,7 +54,8 @@ public class Bird {
         
         if (Input.isKeyDown(GLFW_KEY_SPACE)) {
             if (control) {
-                yDelta = -0.15f;
+                // yDelta = -0.1f;  // easy
+                yDelta = -0.15f;  // hard
             } 
         } else {
             yDelta += 0.01f;
