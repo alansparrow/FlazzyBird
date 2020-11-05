@@ -66,4 +66,16 @@ public class Bird {
         Shader.BIRD.disable();
         texture.unbind();
     }
+
+    public float getX() {
+        return position.x;
+    }
+
+    public float getY() {
+        return position.y;
+    }
+
+	public float getSize() {
+		return SIZE;
+	}
 }

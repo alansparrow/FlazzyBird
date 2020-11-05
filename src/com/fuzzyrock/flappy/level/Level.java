@@ -67,6 +67,28 @@ public class Level {
         }
     }
 
+    private boolean collision() {
+        float bx0 = bird.getX() - bird.getSize() / 2;
+        float bx1 = bird.getX() + bird.getSize() / 2;
+        float by0 = bird.getY() - bird.getSize() / 2;
+        float by1 = bird.getY() + bird.getSize() / 2;
+
+        for (int i = 0; i < PIPE_COUNT * 2; i++) {
+            float px0 = pipes[i].getX();
+            float px1 = pipes[i].getX() + pipes[i].getWidth();
+            float py0 = pipes[i].getY();
+            float py1 = pipes[i].getY() + pipes[i].getHeight();
+
+            if (bx1 > px0 && bx0 < px1) {
+                if (by1 > py0 && by0 < py1) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     private void updatePipes() {        
         for (int i = 0; i < PIPE_COUNT * 2; i += 2) {
             float xPos = pipes[i].getModelMatrix().elements[0 + 3 * 4];
@@ -91,6 +113,10 @@ public class Level {
 
         updatePipes();
         bird.update();
+
+        if (collision()) {
+            System.out.println("Collision");
+        }
     }
 
     private void renderPipes() {

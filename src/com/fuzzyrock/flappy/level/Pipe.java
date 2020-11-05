@@ -58,6 +58,8 @@ public class Pipe {
 
     public void setModelMatrix(Matrix4f mlMatrix) {
         ml_matrix = mlMatrix;
+        position.x = ml_matrix.elements[0 + 3 * 4];
+        position.y = ml_matrix.elements[1 + 3 * 4];
     }
 
     public static VertexArray getMesh() {
