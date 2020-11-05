@@ -5,7 +5,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 import com.fuzzyrock.flappy.graphics.Shader;
 import com.fuzzyrock.flappy.input.Input;
-import com.fuzzyrock.flappy.level.Constants;
+import com.fuzzyrock.flappy.utils.*;
 import com.fuzzyrock.flappy.level.Level;
 import com.fuzzyrock.flappy.math.Matrix4f;
 

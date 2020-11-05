@@ -1,7 +1,5 @@
 package com.fuzzyrock.flappy.level;
 
-import java.util.Vector;
-
 import com.fuzzyrock.flappy.graphics.Texture;
 import com.fuzzyrock.flappy.graphics.VertexArray;
 import com.fuzzyrock.flappy.math.Matrix4f;
@@ -56,6 +54,10 @@ public class Pipe {
 
     public Matrix4f getModelMatrix() {
         return ml_matrix;
+    }
+
+    public void setModelMatrix(Matrix4f mlMatrix) {
+        ml_matrix = mlMatrix;
     }
 
     public static VertexArray getMesh() {

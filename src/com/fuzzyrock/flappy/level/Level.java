@@ -7,15 +7,17 @@ import com.fuzzyrock.flappy.graphics.Texture;
 import com.fuzzyrock.flappy.graphics.VertexArray;
 import com.fuzzyrock.flappy.math.Matrix4f;
 import com.fuzzyrock.flappy.math.Vector3f;
+import com.fuzzyrock.flappy.utils.Constants;
 
 public class Level {
+    private final float SCROLL_RATE = 0.03f;
+
     private VertexArray background;
 
     private Texture bgTexture;
 
-    private int map = 0;
-
     private float xScroll = 0.0f;
+    private float xScrollPipe = 0.0f;
 
     private Bird bird;
 
@@ -26,6 +28,8 @@ public class Level {
     private int index = 0;
 
     private  Random random = new Random();
+
+    private final float SCREEN_OFFSET = Constants.SCREEN_RIGHT / 2.0f;
 
     public Level() {
         float[] vertices = new float[] {
@@ -57,28 +61,40 @@ public class Level {
     private void createPipes() {
         Pipe.create();
         for (int i = 0; i < PIPE_COUNT * 2; i += 2) {
-            pipes[i] = new Pipe(index * 3.0f, random.nextFloat() * 4.0f);
+            pipes[i] = new Pipe(SCREEN_OFFSET + index * 3.0f, random.nextFloat() * 4.0f);
             pipes[i + 1] = new Pipe(pipes[i].getX(), pipes[i].getY() - 11.0f);
             index += 2;
         }
     }
 
-    private void updatePipes() {
+    private void updatePipes() {        
+        for (int i = 0; i < PIPE_COUNT * 2; i += 2) {
+            float xPos = pipes[i].getModelMatrix().elements[0 + 3 * 4];
+            if (xPos < Constants.SCREEN_LEFT * 1.2f) {
+                int lastPipeIdx = (i + 8) % 10;
+                float lastPipeXPos = pipes[lastPipeIdx].getModelMatrix().elements[0 + 3 * 4];
 
+                pipes[i] = new Pipe(lastPipeXPos + 2 * 3.0f, random.nextFloat() * 4.0f);
+                pipes[i + 1] = new Pipe(pipes[i].getX(), pipes[i].getY() - 11.0f);
+            } else {
+                pipes[i].setModelMatrix(pipes[i].getModelMatrix().multiply(Matrix4f.translate(new Vector3f(-SCROLL_RATE, 0.0f, 0.0f))));
+                pipes[i + 1].setModelMatrix(pipes[i + 1].getModelMatrix().multiply(Matrix4f.translate(new Vector3f(-SCROLL_RATE, 0.0f, 0.0f))));
+            }
+        }
     }
 
     public void update() {
-        xScroll -= 0.03f;
+        xScroll -= SCROLL_RATE;
         if (xScroll <= -10.f) {
             xScroll = 0.0f;
         }
 
+        updatePipes();
         bird.update();
     }
 
     private void renderPipes() {
         Shader.PIPE.enable();
-        Shader.PIPE.setUniformMat4f("vw_matrix", Matrix4f.translate(new Vector3f(xScroll, 0.0f, 0.0f)));
         Pipe.getTexture().bind();
         Pipe.getMesh().bind();
 

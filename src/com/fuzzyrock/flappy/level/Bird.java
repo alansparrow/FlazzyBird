@@ -6,6 +6,7 @@ import com.fuzzyrock.flappy.graphics.VertexArray;
 import com.fuzzyrock.flappy.input.Input;
 import com.fuzzyrock.flappy.math.Matrix4f;
 import com.fuzzyrock.flappy.math.Vector3f;
+import com.fuzzyrock.flappy.utils.Constants;
 
 import static org.lwjgl.glfw.GLFW.*;
 

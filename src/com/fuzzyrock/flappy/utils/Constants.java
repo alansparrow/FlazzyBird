@@ -1,4 +1,4 @@
-package com.fuzzyrock.flappy.level;
+package com.fuzzyrock.flappy.utils;
 
 public class Constants {
     public final static float SCREEN_LEFT = -10.0f;
